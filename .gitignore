@@ -1,0 +1,18 @@
+# Código compilado (gerado automaticamente)
+build/
+dist/
+*.class
+
+# Configurações privadas do NetBeans (específicas da tua máquina)
+nbproject/private/
+
+# Ficheiros do sistema operativo
+.DS_Store
+Thumbs.db
+
+# Logs do Tomcat
+*.log
+
+# Ficheiros de ambiente com senhas (MUITO IMPORTANTE)
+*.env
+config.properties
