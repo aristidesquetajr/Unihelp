@@ -28,6 +28,11 @@ public class Utilizador {
     public Utilizador() {
     }
 
+    public Utilizador(String email, String senha) {
+        this.email = email;
+        this.senha = senha;
+    }
+
     public Utilizador(String nome, String email, String senha,
             Perfil perfil, Status status) {
         this.nome = nome;
