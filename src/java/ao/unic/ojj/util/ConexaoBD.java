@@ -61,27 +61,4 @@ public class ConexaoBD {
             }
         }
     }
-
-    public static boolean testarConexao() {
-        Connection con = null;
-        try {
-            con = getConexao();
-            return con != null && !con.isClosed();
-        } catch (SQLException e) {
-            return false;
-        } finally {
-            fechar(con);
-        }
-    }
-
-    public static void main(String[] args) {
-        System.out.println("A testar ligacao a base de dados...");
-
-        if (testarConexao()) {
-            System.out.println("Ligacao bem sucedida! O sistema esta pronto.");
-        } else {
-            System.out.println("Falha na ligação. Verifique as configuracoes.");
-        }
-    }
-
 }
