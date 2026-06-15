@@ -66,7 +66,7 @@ public class UtilizadorDAO {
     public Utilizador autenticar(String email, String senha) {
         String sql = """
             SELECT * FROM utilizador
-            WHERE email = ? AND senha = md5(?) AND status = 'ACTIVO'
+            WHERE email = ? AND senha = md5(?)
 	    """;
 
         try {
