@@ -99,9 +99,6 @@
                 <div class="stat-card">
 
                 </div>
-                <div class="stat-card">
-
-                </div>
             </div>
 
             <!-- Tabela de atendimentos recentes -->

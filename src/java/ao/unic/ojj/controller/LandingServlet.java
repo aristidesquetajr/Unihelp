@@ -12,7 +12,7 @@ import java.io.IOException;
  * GET / → Mostra a landing page. Se o utilizador já estiver logado, redireciona
  * para o seu dashboard.
  */
-@WebServlet("/")
+@WebServlet("")
 public class LandingServlet extends HttpServlet {
 
     @Override
