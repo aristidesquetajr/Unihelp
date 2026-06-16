@@ -488,6 +488,15 @@ a{
     width:100%;
     font:inherit
 }
+.form-row{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:1rem
+}
+.form-hint{
+    color:var(--muted);
+    font-size:.78rem
+}
 .req{
     color:var(--danger)
 }
@@ -629,6 +638,10 @@ a{
     background:rgba(201,162,39,.14);
     color:#96730d
 }
+.stat-icon.danger{
+    background:rgba(197,48,48,.08);
+    color:var(--danger)
+}
 .stat-value{
     font-size:1.45rem;
     font-weight:900;
@@ -697,6 +710,17 @@ a{
 .badge-danger{
     color:var(--danger);
     background:rgba(197,48,48,.08)
+}
+.tag{
+    display:inline-flex;
+    align-items:center;
+    min-height:28px;
+    padding:.25rem .5rem;
+    border-radius:999px;
+    background:#f2f4f7;
+    color:#667085;
+    font-size:.78rem;
+    font-weight:800
 }
 .empty-state{
     padding:2rem 1rem;
@@ -795,6 +819,9 @@ a{
 @media (max-width:720px){
     .features-grid,
     .stats-grid{
+        grid-template-columns:1fr !important
+    }
+    .form-row{
         grid-template-columns:1fr
     }
     .section-header{
