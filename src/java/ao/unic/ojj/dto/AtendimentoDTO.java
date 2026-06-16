@@ -17,6 +17,7 @@ public class AtendimentoDTO {
     private int idAtendimento;
     private String nomeEstudante;
     private String numeroEstudante;
+    private String nomeFuncionario;
     private Date dataAgendada;
     private String descricao;
     private Atendimento.Estado estado;
@@ -47,6 +48,14 @@ public class AtendimentoDTO {
 
     public void setNumeroEstudante(String numeroEstudante) {
         this.numeroEstudante = numeroEstudante;
+    }
+
+    public String getNomeFuncionario() {
+        return nomeFuncionario;
+    }
+
+    public void setNomeFuncionario(String nomeFuncionario) {
+        this.nomeFuncionario = nomeFuncionario;
     }
 
     public Date getDataAgendada() {

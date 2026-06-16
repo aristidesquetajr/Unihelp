@@ -26,13 +26,13 @@ public class InscricaoDAO {
             + "       t.nome AS nomeTurma, t.sala, t.anoAcademico, "
             + "       c.nome AS nomeCurso, "
             + "       pl.anoLetivo, pl.semestre "
-            + "FROM Inscricao i "
-            + "JOIN Turma        t  ON i.idTurma          = t.id "
-            + "JOIN Curso        c  ON t.idCurso           = c.id "
-            + "JOIN PeriodoLetivo pl ON t.idPeriodoLetivo  = pl.id ";
+            + "FROM inscricao i "
+            + "JOIN turma        t  ON i.idTurma          = t.id "
+            + "JOIN curso        c  ON t.idCurso           = c.id "
+            + "JOIN periodoLetivo pl ON t.idPeriodoLetivo  = pl.id ";
 
     public boolean inserir(Inscricao i) {
-        String sql = "INSERT INTO Inscricao (idEstudante, idTurma, dataInscricao, estado) "
+        String sql = "INSERT INTO inscricao (idEstudante, idTurma, dataInscricao, estado) "
                 + "VALUES (?,?,?,?)";
         Connection con = null;
         try {
@@ -52,7 +52,7 @@ public class InscricaoDAO {
     }
 
     public Inscricao buscarPorId(int id) {
-        String sql = "SELECT * FROM Inscricao WHERE id=?";
+        String sql = "SELECT * FROM inscricao WHERE id=?";
         Connection con = null;
         try {
             con = ConexaoBD.getConexao();
@@ -93,7 +93,7 @@ public class InscricaoDAO {
     }
 
     public List<Inscricao> listarPorEstudante(int idEstudante) {
-        String sql = "SELECT * FROM Inscricao WHERE idEstudante=? ORDER BY dataInscricao DESC";
+        String sql = "SELECT * FROM inscricao WHERE idEstudante=? ORDER BY dataInscricao DESC";
         List<Inscricao> lista = new ArrayList<>();
         Connection con = null;
         try {
@@ -113,7 +113,7 @@ public class InscricaoDAO {
     }
 
     public Inscricao buscarAtivaPorEstudante(int idEstudante) {
-        String sql = "SELECT * FROM Inscricao WHERE idEstudante=? AND estado='ACTIVO' LIMIT 1";
+        String sql = "SELECT * FROM inscricao WHERE idEstudante=? AND estado='ACTIVO' LIMIT 1";
         Connection con = null;
         try {
             con = ConexaoBD.getConexao();
@@ -132,7 +132,7 @@ public class InscricaoDAO {
     }
 
     public List<Inscricao> listarPorTurma(int idTurma) {
-        String sql = "SELECT * FROM Inscricao WHERE idTurma=?";
+        String sql = "SELECT * FROM inscricao WHERE idTurma=?";
         List<Inscricao> lista = new ArrayList<>();
         Connection con = null;
         try {
@@ -152,7 +152,7 @@ public class InscricaoDAO {
     }
 
     public boolean atualizarEstado(int id, Inscricao.Estado estado) {
-        String sql = "UPDATE Inscricao SET estado=? WHERE id=?";
+        String sql = "UPDATE inscricao SET estado=? WHERE id=?";
         Connection con = null;
         try {
             con = ConexaoBD.getConexao();
@@ -169,7 +169,7 @@ public class InscricaoDAO {
     }
 
     public boolean eliminar(int id) {
-        String sql = "DELETE FROM Inscricao WHERE id=?";
+        String sql = "DELETE FROM inscricao WHERE id=?";
         Connection con = null;
         try {
             con = ConexaoBD.getConexao();

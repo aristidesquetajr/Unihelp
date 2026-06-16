@@ -25,12 +25,12 @@ public class NotaDAO {
             = "SELECT n.id, n.valor, n.tipo, "
             + "       d.nome AS nomeDisciplina, d.codigo AS codigoDisciplina, "
             + "       pl.anoLetivo, pl.semestre "
-            + "FROM Nota n "
-            + "JOIN Disciplina   d  ON n.idDisciplina    = d.id "
-            + "JOIN PeriodoLetivo pl ON n.idPeriodoLetivo = pl.id ";
+            + "FROM nota n "
+            + "JOIN disciplina   d  ON n.idDisciplina    = d.id "
+            + "JOIN periodoLetivo pl ON n.idPeriodoLetivo = pl.id ";
 
     public boolean inserir(Nota n) {
-        String sql = "INSERT INTO Nota (idEstudante, idDisciplina, idPeriodoLetivo, valor, tipo) "
+        String sql = "INSERT INTO nota (idEstudante, idDisciplina, idPeriodoLetivo, valor, tipo) "
                 + "VALUES (?,?,?,?,?)";
         Connection con = null;
         try {
@@ -51,7 +51,7 @@ public class NotaDAO {
     }
 
     public Nota buscarPorId(int id) {
-        String sql = "SELECT * FROM Nota WHERE id=?";
+        String sql = "SELECT * FROM nota WHERE id=?";
         Connection con = null;
         try {
             con = ConexaoBD.getConexao();
@@ -85,7 +85,7 @@ public class NotaDAO {
     }
 
     public List<Nota> listarPorEstudante(int idEstudante) {
-        String sql = "SELECT * FROM Nota WHERE idEstudante=? ORDER BY idPeriodoLetivo DESC";
+        String sql = "SELECT * FROM nota WHERE idEstudante=? ORDER BY idPeriodoLetivo DESC";
         List<Nota> lista = new ArrayList<>();
         Connection con = null;
         try {
@@ -105,7 +105,7 @@ public class NotaDAO {
     }
 
     public List<Nota> listarPorDisciplinaEPeriodo(int idDisciplina, int idPeriodoLetivo) {
-        String sql = "SELECT * FROM Nota WHERE idDisciplina=? AND idPeriodoLetivo=? "
+        String sql = "SELECT * FROM nota WHERE idDisciplina=? AND idPeriodoLetivo=? "
                 + "ORDER BY idEstudante, tipo";
         List<Nota> lista = new ArrayList<>();
         Connection con = null;
@@ -127,7 +127,7 @@ public class NotaDAO {
     }
 
     public boolean atualizar(Nota n) {
-        String sql = "UPDATE Nota SET valor=?, tipo=? WHERE id=?";
+        String sql = "UPDATE nota SET valor=?, tipo=? WHERE id=?";
         Connection con = null;
         try {
             con = ConexaoBD.getConexao();
@@ -145,7 +145,7 @@ public class NotaDAO {
     }
 
     public boolean eliminar(int id) {
-        String sql = "DELETE FROM Nota WHERE id=?";
+        String sql = "DELETE FROM nota WHERE id=?";
         Connection con = null;
         try {
             con = ConexaoBD.getConexao();

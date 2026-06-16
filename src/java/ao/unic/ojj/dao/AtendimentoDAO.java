@@ -26,14 +26,17 @@ public class AtendimentoDAO {
 
     private static final String SQL_DTO = """
         SELECT a.id, a.dataAgendada, a.descricao, a.estado, a.motivoRejeicao,
-        u.nome AS nomeEstudante, e.numeroEstudante
-        FROM Atendimento a
-        JOIN Estudante e  ON a.idEstudante   = e.id
-        JOIN Utilizador u ON e.idUtilizador  = u.id
+        u.nome AS nomeEstudante, e.numeroEstudante,
+        uf.nome AS nomeFuncionario
+        FROM atendimento a
+        JOIN estudante e  ON a.idEstudante   = e.id
+        JOIN utilizador u ON e.idUtilizador  = u.id
+        LEFT JOIN funcionario f  ON a.idFuncionario = f.id
+        LEFT JOIN utilizador uf  ON f.idUtilizador  = uf.id
     """;
 
     public boolean inserir(Atendimento a) {
-        String sql = "INSERT INTO Atendimento (idEstudante, dataAgendada, descricao, estado) "
+        String sql = "INSERT INTO atendimento (idEstudante, dataAgendada, descricao, estado) "
                 + "VALUES (?,?,?,'PENDENTE')";
 
         try {
@@ -103,7 +106,7 @@ public class AtendimentoDAO {
     }
 
     public List<Atendimento> listarPorEstudante(int idEstudante) {
-        String sql = "SELECT * FROM Atendimento WHERE idEstudante=? ORDER BY dataAgendada DESC";
+        String sql = "SELECT * FROM atendimento WHERE idEstudante=? ORDER BY dataAgendada DESC";
         List<Atendimento> lista = new ArrayList<>();
         Connection con = null;
         try {
@@ -123,7 +126,7 @@ public class AtendimentoDAO {
     }
 
     public int contarPorData(java.util.Date data) {
-        String sql = "SELECT COUNT(*) FROM Atendimento "
+        String sql = "SELECT COUNT(*) FROM atendimento "
                 + "WHERE DATE(dataAgendada)=? AND estado IN ('PENDENTE','CONFIRMADO')";
         Connection con = null;
         try {
@@ -143,7 +146,7 @@ public class AtendimentoDAO {
     }
 
     public boolean aprovar(int id, int idFuncionario) {
-        String sql = "UPDATE Atendimento SET estado='CONFIRMADO', idFuncionario=? WHERE id=?";
+        String sql = "UPDATE atendimento SET estado='CONFIRMADO', idFuncionario=? WHERE id=?";
         Connection con = null;
         try {
             con = ConexaoBD.getConexao();
@@ -160,7 +163,7 @@ public class AtendimentoDAO {
     }
 
     public boolean rejeitar(int id, int idFuncionario, String motivoRejeicao) {
-        String sql = "UPDATE Atendimento SET estado='REJEITADO', idFuncionario=?, "
+        String sql = "UPDATE atendimento SET estado='REJEITADO', idFuncionario=?, "
                 + "motivoRejeicao=? WHERE id=?";
         Connection con = null;
         try {
@@ -179,7 +182,7 @@ public class AtendimentoDAO {
     }
 
     public boolean eliminar(int id) {
-        String sql = "DELETE FROM Atendimento WHERE id=?";
+        String sql = "DELETE FROM atendimento WHERE id=?";
         Connection con = null;
         try {
             con = ConexaoBD.getConexao();
@@ -232,6 +235,7 @@ public class AtendimentoDAO {
         dto.setIdAtendimento(rs.getInt("id"));
         dto.setNomeEstudante(rs.getString("nomeEstudante"));
         dto.setNumeroEstudante(rs.getString("numeroEstudante"));
+        dto.setNomeFuncionario(rs.getString("nomeFuncionario"));
         dto.setDataAgendada(rs.getTimestamp("dataAgendada"));
         dto.setDescricao(rs.getString("descricao"));
         dto.setEstado(Atendimento.Estado.valueOf(rs.getString("estado")));
