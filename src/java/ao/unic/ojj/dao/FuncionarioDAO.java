@@ -54,7 +54,7 @@ public class FuncionarioDAO {
             ps.executeUpdate();
 
             if (dto.getTelefone() != null && !dto.getTelefone().isBlank()) {
-                String sqlTel = "INSERT INTO Telefone (numero, idUtilizador) VALUES (?,?)";
+                String sqlTel = "INSERT INTO telefone (numero, idUtilizador) VALUES (?,?)";
                 PreparedStatement psTel = con.prepareStatement(sqlTel);
                 psTel.setString(1, dto.getTelefone());
                 psTel.setInt(2, idUtilizador);
@@ -87,7 +87,7 @@ public class FuncionarioDAO {
     }
 
     public Funcionario buscarPorId(int id) {
-        String sql = "SELECT * FROM Funcionario WHERE id=?";
+        String sql = "SELECT * FROM funcionario WHERE id=?";
 
         try {
             con = ConexaoBD.getConexao();
@@ -107,7 +107,7 @@ public class FuncionarioDAO {
     }
 
     public Funcionario buscarPorIdUtilizador(int idUtilizador) {
-        String sql = "SELECT * FROM Funcionario WHERE idUtilizador=?";
+        String sql = "SELECT * FROM funcionario WHERE idUtilizador=?";
 
         try {
             con = ConexaoBD.getConexao();
@@ -127,7 +127,7 @@ public class FuncionarioDAO {
     }
 
     public List<Funcionario> listar() {
-        String sql = "SELECT * FROM Funcionario";
+        String sql = "SELECT * FROM funcionario";
         List<Funcionario> lista = new ArrayList<>();
 
         try {
@@ -147,7 +147,7 @@ public class FuncionarioDAO {
     }
 
     public boolean atualizar(Funcionario f) {
-        String sql = "UPDATE Funcionario SET departamento=?, cargo=? WHERE id=?";
+        String sql = "UPDATE funcionario SET departamento=?, cargo=? WHERE id=?";
 
         try {
             con = ConexaoBD.getConexao();
@@ -166,7 +166,7 @@ public class FuncionarioDAO {
     }
 
     public boolean eliminar(int id) {
-        String sql = "DELETE FROM Funcionario WHERE id=?";
+        String sql = "DELETE FROM funcionario WHERE id=?";
 
         try {
             con = ConexaoBD.getConexao();
