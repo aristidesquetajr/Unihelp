@@ -75,6 +75,26 @@ public class AtendimentoDAO {
         return null;
     }
 
+    public AtendimentoDTO buscarPorIdDTO(int id) {
+        String sql = SQL_DTO + "WHERE a.id=?";
+
+        try {
+            con = ConexaoBD.getConexao();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return mapRowDTO(rs);
+            }
+        } catch (SQLException e) {
+            System.err.println("[AtendimentoDAO] Erro ao buscar por id DTO: " + e.getMessage());
+        } finally {
+            ConexaoBD.fechar(con);
+        }
+        return null;
+    }
+
     public List<AtendimentoDTO> listarPendentesDTO() {
         String sql = SQL_DTO + "WHERE a.estado='PENDENTE' ORDER BY a.dataAgendada ASC";
         return executarQueryDTO(sql, null);
@@ -82,6 +102,11 @@ public class AtendimentoDAO {
 
     public List<AtendimentoDTO> listarPorDataDTO(java.util.Date data) {
         String sql = SQL_DTO + "WHERE DATE(a.dataAgendada)=? ORDER BY a.dataAgendada ASC";
+        return executarQueryDTO(sql, data);
+    }
+
+    public List<AtendimentoDTO> listarConfirmadosPorDataDTO(java.util.Date data) {
+        String sql = SQL_DTO + "WHERE DATE(a.dataAgendada)=? AND a.estado='CONFIRMADO' ORDER BY a.dataAgendada ASC";
         return executarQueryDTO(sql, data);
     }
 

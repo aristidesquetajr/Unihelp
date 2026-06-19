@@ -147,19 +147,11 @@
                                                                 </button>
                                                             </form>
 
-                                                            <%-- Rejeição rápida directa --%>
-                                                            <form action="${pageContext.request.contextPath}/funcionario/atendimento/acao"
-                                                                  method="post" style="display:inline">
-                                                                <input type="hidden" name="idAtendimento"      value="${a.idAtendimento}">
-                                                                <input type="hidden" name="accao" value="REJEITAR">
-                                                                <input type="hidden" name="origem"  value="pendentes">
-                                                                <button type="submit"
-                                                                        class="btn btn-danger btn-sm"
-                                                                        data-confirm="Rejeitar o pedido de ${a.nomeEstudante}?"
-                                                                        title="Rejeitar">
-                                                                    <i class="bi bi-x-lg"></i>
-                                                                </button>
-                                                            </form>
+                                                            <a href="${pageContext.request.contextPath}/funcionario/aprovacao?id=${a.idAtendimento}"
+                                                               class="btn btn-danger btn-sm"
+                                                               title="Rejeitar">
+                                                                <i class="bi bi-x-lg"></i>
+                                                            </a>
 
                                                         </div>
                                                     </td>
@@ -172,7 +164,7 @@
                         </div>
                         <div class="card-footer" style="font-size:.78rem;color:var(--text-muted)">
                             <i class="bi bi-info-circle"></i>
-                            Os botões <strong>✓</strong> e <strong>✕</strong> permitem aprovação/rejeição rápida.
+                            O botão <strong>✓</strong> aprova rapidamente. O botão <strong>✕</strong> abre a análise para informar o motivo da rejeição.
                         </div>
                     </div>
 

@@ -45,15 +45,15 @@ public class FuncionarioAtendimentoAcaoServlet extends HttpServlet {
             return;
         }
 
+        if ("REJEITAR".equals(accao)) {
+            res.sendRedirect(req.getContextPath() + "/funcionario/aprovacao?id=" + idParam);
+            return;
+        }
+
         try {
             int idAtendimento = Integer.parseInt(idParam);
             boolean sucesso = switch (accao) {
                 case "APROVAR" -> atendimentoDAO.aprovar(idAtendimento, funcionario.getId());
-                case "REJEITAR" -> atendimentoDAO.rejeitar(
-                        idAtendimento,
-                        funcionario.getId(),
-                        "Pedido rejeitado pelo funcionário."
-                );
                 default -> false;
             };
 

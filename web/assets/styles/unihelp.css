@@ -226,6 +226,12 @@ body{
     padding-top:1rem;
     border-top:1px solid #eef2f7
 }
+.approval-grid{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:1.25rem;
+    align-items:start
+}
 .sidebar-overlay{
     display:none
 }
@@ -371,6 +377,9 @@ input:focus, select:focus, textarea:focus{
     .main-content{
         margin-left:0;
         padding:1rem
+    }
+    .approval-grid{
+        grid-template-columns:1fr
     }
     .btn-sidebar-toggle{
         display:inline-flex

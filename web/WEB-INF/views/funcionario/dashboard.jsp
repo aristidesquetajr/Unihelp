@@ -232,14 +232,10 @@
                                                                 <i class="bi bi-check-lg"></i> Aprovar
                                                             </button>
                                                         </form>
-                                                        <form action="${pageContext.request.contextPath}/funcionario/atendimento/acao" method="post">
-                                                            <input type="hidden" name="idAtendimento" value="${a.idAtendimento}">
-                                                            <input type="hidden" name="accao" value="REJEITAR">
-                                                            <input type="hidden" name="origem" value="dashboard">
-                                                            <button type="submit" class="btn btn-danger btn-sm" data-confirm="Rejeitar o pedido de ${a.nomeEstudante}?">
-                                                                <i class="bi bi-x-lg"></i> Rejeitar
-                                                            </button>
-                                                        </form>
+                                                        <a href="${pageContext.request.contextPath}/funcionario/aprovacao?id=${a.idAtendimento}"
+                                                           class="btn btn-danger btn-sm">
+                                                            <i class="bi bi-x-lg"></i> Rejeitar
+                                                        </a>
                                                     </div>
                                                 </td>
                                             </tr>
