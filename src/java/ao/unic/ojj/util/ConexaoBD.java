@@ -14,41 +14,64 @@ import java.sql.SQLException;
  */
 public class ConexaoBD {
 
-    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
+    private static final String DEFAULT_HOST = "localhost";
+    private static final String DEFAULT_PORT = "3306";
+    private static final String DEFAULT_DB = "db_unihelp";
+    private static final String DEFAULT_USER = "root";
+    private static final String DEFAULT_PASS = "";
 
-    private static final String URL = "jdbc:mysql://localhost:3306/db_unihelp"
-            + "?useSSL=false"
-            + "&allowPublicKeyRetrieval=true"
-            + "&serverTimezone=Africa/Luanda"
-            + "&characterEncoding=UTF-8";
+    private static final String DRIVER_CLASS = "com.mysql.cj.jdbc.Driver";
 
     private static final String USUARIO = "root";
     private static final String SENHA = "";
 
-    static {
-        try {
-            Class.forName(DRIVER);
-            System.out.println("[ConexaoBD] Driver MySQL carregado com sucesso.");
-        } catch (ClassNotFoundException e) {
-            System.err.println("[ConexaoBD] ERRO: Driver MySQL não encontrado.");
-            System.err.println("            Verifique se o mysql-connector-j.jar está nas Libraries.");
-            throw new RuntimeException("Driver JDBC não encontrado.", e);
-        }
-    }
-
     private ConexaoBD() {
     }
 
-    public static Connection getConexao() {
-        try {
-            Connection con = DriverManager.getConnection(URL, USUARIO, SENHA);
-            System.out.println("[ConexaoBD] Ligacao estabelecida com sucesso.");
-            return con;
-        } catch (SQLException e) {
-            System.err.println("[ConexaoBD] ERRO ao ligar à base de dados: " + e.getMessage());
-            System.err.println("            Verifique se o MySQL (XAMPP) esta a correr.");
-            throw new RuntimeException("Não foi possível ligar à base de dados.", e);
+    private static String getEnvOrDefault(String chave, String valorPadrao) {
+        String valor = System.getenv(chave);
+        return (valor != null && !valor.isBlank()) ? valor.trim() : valorPadrao;
+    }
+
+    private static String construirUrl() {
+        String host = getEnvOrDefault("DB_HOST", DEFAULT_HOST);
+        String port = getEnvOrDefault("DB_PORT", DEFAULT_PORT);
+        String db = getEnvOrDefault("DB_NAME", DEFAULT_DB);
+
+        boolean ambienteRemoto = !"localhost".equalsIgnoreCase(host)
+                && !"127.0.0.1".equals(host);
+
+        StringBuilder url = new StringBuilder("jdbc:mysql://")
+                .append(host).append(":").append(port).append("/").append(db)
+                .append("?serverTimezone=UTC")
+                .append("&useUnicode=true&characterEncoding=UTF-8");
+
+        if (ambienteRemoto) {
+            // Exigido por provedores como o Aiven
+            url.append("&useSSL=true")
+                    .append("&requireSSL=true")
+                    .append("&verifyServerCertificate=false");
+        } else {
+            // XAMPP local normalmente não tem SSL configurado
+            url.append("&useSSL=false")
+                    .append("&allowPublicKeyRetrieval=true");
         }
+
+        return url.toString();
+    }
+
+    public static Connection getConexao() throws SQLException {
+        try {
+            Class.forName(DRIVER_CLASS);
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("Driver JDBC do MySQL (mysql-connector-j) não encontrado no classpath.", e);
+        }
+
+        String url = construirUrl();
+        String utilizador = getEnvOrDefault("DB_USER", DEFAULT_USER);
+        String senha = getEnvOrDefault("DB_PASS", DEFAULT_PASS);
+
+        return DriverManager.getConnection(url, utilizador, senha);
     }
 
     public static void fechar(Connection con) {
