@@ -1,132 +1,174 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <!DOCTYPE html>
 <html lang="pt-AO">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>UNIHELP — Sistema de Gestão Académica OJJ</title>
+        <meta name="description" content="UNIHELP - Uma plataforma moderna para gestão académica e escolar, conectando estudantes, professores e administração num ecossistema digital seguro.">
+        <meta name="keywords" content="gestão académica, sistema escolar, plataforma educacional, Angola">
+        <meta property="og:title" content="UNIHELP - Sistema Académico">
+        <meta property="og:description" content="Plataforma moderna para gestão escolar conectando estudantes, professores e administração.">
+        <meta property="og:type" content="website">
+        <title>UNIHELP - Sistema Académico</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/styles/unihelp.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/styles/landing.css">
     </head>
     <body>
 
-        <!-- ═══════════════════════════════════════
-             NAVEGAÇÃO
-             ═══════════════════════════════════════ -->
-        <nav class="landing-nav">
-            <div class="landing-brand">
-                <div class="brand-logo">UH</div>
-                UNIHELP
-            </div>
-            <a href="${pageContext.request.contextPath}/login" class="btn btn-accent btn-sm">
-                <i class="bi bi-box-arrow-in-right"></i> Entrar
-            </a>
-        </nav>
-
-        <!-- ═══════════════════════════════════════
-             HERO
-             ═══════════════════════════════════════ -->
-        <section class="landing-hero">
-            <div class="hero-logo">UH</div>
-            <h1>UNIHELP &mdash; OJJ</h1>
-            <p>Sistema integrado de gestão de atendimentos, notas e registos académicos da instituição OJJ. Simples, rápido e seguro.</p>
-            <div class="hero-btns">
-                <a href="${pageContext.request.contextPath}/login" class="btn btn-accent btn-lg">
-                    <i class="bi bi-box-arrow-in-right"></i>&nbsp; Aceder ao Sistema
+        <header>
+            <div class="logo">
+                <a href="${pageContext.request.contextPath}/" class="logo-link">
+                    <img src="${pageContext.request.contextPath}/assets/images/logo.png" alt="UNIHELP Logo">
+                    UNIHELP
                 </a>
             </div>
-            <!-- estatísticas visuais -->
-            <div style="display:flex;justify-content:center;gap:3rem;margin-top:3rem;flex-wrap:wrap">
-                <div style="text-align:center">
-                    <div style="font-size:2rem;font-weight:900;color:var(--accent-light)">3</div>
-                    <div style="font-size:.78rem;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.06em">Perfis de Acesso</div>
-                </div>
-                <div style="text-align:center">
-                    <div style="font-size:2rem;font-weight:900;color:var(--accent-light)">11</div>
-                    <div style="font-size:.78rem;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.06em">Entidades Académicas</div>
-                </div>
-                <div style="text-align:center">
-                    <div style="font-size:2rem;font-weight:900;color:var(--accent-light)">27</div>
-                    <div style="font-size:.78rem;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.06em">Operações Disponíveis</div>
-                </div>
+
+            <nav>
+                <a href="#sobre">Sobre</a>
+                <a href="#func">Funcionalidades</a>
+                <a href="#seguranca">Segurança</a>
+            </nav>
+
+            <button class="btn" data-action="navigate" data-target="${pageContext.request.contextPath}/login" aria-label="Entrar no sistema">
+                Entrar
+            </button>
+        </header>
+
+        <section class="hero">
+            <h1>Sistema Académico <span>UNIHELP</span></h1>
+
+            <p>
+                Uma plataforma moderna para gestão escolar, conectando estudantes, professores e administração
+                num único ecossistema digital seguro, rápido e inteligente.
+            </p>
+
+            <div class="hero-actions">
+                <button class="btn-primary" data-action="navigate" data-target="${pageContext.request.contextPath}/login">Aceder ao Sistema</button>
+                <button class="btn-secondary" data-action="scroll" data-target="#sobre">Saber mais</button>
             </div>
         </section>
 
-        <!-- ═══════════════════════════════════════
-             FUNCIONALIDADES
-             ═══════════════════════════════════════ -->
-        <section class="landing-features">
-            <h2 class="features-title">O que o sistema oferece</h2>
-            <p class="features-sub">Três perfis de acesso, cada um com as ferramentas certas para o seu papel.</p>
+        <section class="stats">
+            <div class="stat">
+                <h2>+1.200</h2>
+                <p>Estudantes</p>
+            </div>
 
-            <div class="features-grid">
+            <div class="stat">
+                <h2>+80</h2>
+                <p>Funcionários</p>
+            </div>
 
-                <!-- Estudante: Agendamento -->
-                <div class="feature-card">
-                    <div class="feature-icon" style="background:rgba(30,58,95,.1);color:var(--primary)">
-                        <i class="bi bi-calendar-plus"></i>
-                    </div>
-                    <h3>Agendamento de Atendimentos</h3>
-                    <p>Estudantes podem agendar atendimentos com funcionários, acompanhar o estado (pendente, confirmado ou rejeitado) e consultar o histórico completo.</p>
+            <div class="stat">
+                <h2>100%</h2>
+                <p>Digital</p>
+            </div>
+
+            <div class="stat">
+                <h2>24/7</h2>
+                <p>Disponível</p>
+            </div>
+        </section>
+
+        <section class="section" id="sobre">
+            <h2 class="section-title">Sobre o UNIHELP</h2>
+
+            <div class="card">
+                <h3>Missão</h3>
+                <p>
+                    A missão do UNIHELP é modernizar e facilitar a gestão académica das instituições de ensino em Angola, promovendo a digitalização dos processos escolares e melhorando a comunicação entre estudantes, funcionários e administração.
+                    <br><br>
+                    O sistema foi desenvolvido para centralizar informações como notas, inscrições, agendamentos de atendimento e gestão de utilizadores, reduzindo o uso de processos manuais e tornando a gestão escolar mais eficiente, organizada e acessível.
+                </p>
+
+                <br>
+
+                <h3>Visão</h3>
+                <p>
+                    Ser uma plataforma académica de referência em Angola, contribuindo para a transformação digital das instituições de ensino e para a melhoria da qualidade da gestão escolar no país.
+                    <br><br>
+                    O UNIHELP pretende apoiar escolas, institutos e universidades na transição para sistemas digitais modernos, seguros e eficientes, facilitando o acesso à informação académica em qualquer lugar.
+                </p>
+                <br>
+
+                <h3>Valores</h3>
+                <p>
+                    <strong>Inovação</strong> — aplicação de tecnologia para melhorar a educação em Angola.<br>
+                    <strong>Eficiência</strong> — redução de burocracia e melhoria dos processos académicos.<br>
+                    <strong>Organização</strong> — centralização e gestão estruturada de dados escolares.<br>
+                    <strong>Transparência</strong> — acesso claro e controlado à informação.<br>
+                    <strong>Responsabilidade</strong> — proteção e uso correto dos dados dos utilizadores.<br>
+                    <strong>Acessibilidade</strong> — sistema simples, intuitivo e adaptado ao contexto local.
+                </p>
+        </section>
+
+        <section class="section" id="func">
+            <h2 class="section-title">Funcionalidades</h2>
+
+            <div class="grid">
+
+                <div class="card">
+                    <h3>📊 Gestão de Notas</h3>
+                    <p>Consulta e lançamento de notas em tempo real.</p>
                 </div>
 
-                <!-- Estudante: Notas -->
-                <div class="feature-card">
-                    <div class="feature-icon" style="background:rgba(39,103,73,.1);color:var(--success)">
-                        <i class="bi bi-journal-text"></i>
-                    </div>
-                    <h3>Boletim de Notas</h3>
-                    <p>Consulta de notas por disciplina e período letivo, com distinção entre avaliação contínua, exames e provas de recurso.</p>
+                <div class="card">
+                    <h3>🧑‍🎓 Estudantes</h3>
+                    <p>Perfil académico completo e histórico escolar.</p>
                 </div>
 
-                <!-- Estudante: Inscrições -->
-                <div class="feature-card">
-                    <div class="feature-icon" style="background:rgba(201,162,39,.12);color:var(--accent-dark)">
-                        <i class="bi bi-book-half"></i>
-                    </div>
-                    <h3>Histórico de Inscrições</h3>
-                    <p>Visualização completa das inscrições em cursos e turmas por período letivo, com estado actual (activo, concluído ou trancado).</p>
+                <div class="card">
+                    <h3>📅 Agendamentos</h3>
+                    <p>Gestão de atendimentos entre alunos e funcionários.</p>
                 </div>
 
-                <!-- Funcionário: Agenda -->
-                <div class="feature-card">
-                    <div class="feature-icon" style="background:rgba(43,108,176,.1);color:var(--info)">
-                        <i class="bi bi-calendar2-week"></i>
-                    </div>
-                    <h3>Gestão da Agenda</h3>
-                    <p>Funcionários consultam e gerem a sua agenda diária, aprovam ou rejeitam pedidos de atendimento e registam notas dos estudantes.</p>
+                <div class="card">
+                    <h3>📁 Relatórios</h3>
+                    <p>Relatórios automáticos para administração.</p>
                 </div>
 
-                <!-- Admin: Utilizadores -->
-                <div class="feature-card">
-                    <div class="feature-icon" style="background:rgba(192,86,33,.1);color:var(--warning)">
-                        <i class="bi bi-people"></i>
-                    </div>
-                    <h3>Gestão de Utilizadores</h3>
-                    <p>Administradores controlam todos os perfis de acesso (ADMIN, ESTUDANTE, FUNCIONÁRIO), podendo activar ou bloquear contas.</p>
+                <div class="card">
+                    <h3>🔐 Segurança</h3>
+                    <p>Acesso por perfis com autenticação segura.</p>
                 </div>
 
-                <!-- Admin: Académico -->
-                <div class="feature-card">
-                    <div class="feature-icon" style="background:rgba(197,48,48,.08);color:var(--danger)">
-                        <i class="bi bi-mortarboard"></i>
-                    </div>
-                    <h3>Estrutura Académica</h3>
-                    <p>Gestão centralizada de cursos, disciplinas, turmas, períodos letivos e inscrições. Toda a estrutura da instituição num só painel.</p>
+                <div class="card">
+                    <h3>🌐 Cloud</h3>
+                    <p>Acesso online de qualquer dispositivo.</p>
                 </div>
 
             </div>
         </section>
 
-        <!-- ═══════════════════════════════════════
-             RODAPÉ
-             ═══════════════════════════════════════ -->
-        <footer class="landing-footer">
-            &copy; <span data-year></span> UNIHELP &mdash; OJJ &bull;
+        <section class="section" id="seguranca">
+            <h2 class="section-title">Segurança</h2>
+
+            <div class="card">
+                <h3>Segurança do Sistema</h3>
+                <p>
+                    A segurança do UNIHELP é fundamental para garantir a proteção dos dados académicos das instituições de ensino em Angola.
+                    <br><br>
+                    O sistema inclui medidas como:
+                    <br><br>
+                    • Autenticação segura através de login com email e senha<br>
+                    • Controlo de acesso por perfis (Estudante, Funcionário e Administrador)<br>
+                    • Restrição de funcionalidades conforme o nível de utilizador<br>
+                    • Proteção de dados académicos e pessoais<br>
+                    • Prevenção de acessos não autorizados ao sistema<br>
+                    • Organização de permissões para garantir uso correto da plataforma
+                    <br><br>
+                    O objetivo é assegurar que cada utilizador tenha acesso apenas às informações e funções necessárias ao seu perfil, garantindo confidencialidade, integridade e segurança dos dados.
+                </p>
+            </div>
+        </section>
+
+        <footer>
+            &copy; 2026 UNIHELP &mdash; OJJ &bull;
             Projecto Final de Programação IV &bull;
             Desenvolvido com Java EE + JSP + JDBC + MySQL
         </footer>
 
-        <script src="${pageContext.request.contextPath}/assets/scripts/unihelp.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/scripts/landing.js"></script>
     </body>
 </html>
