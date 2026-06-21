@@ -51,7 +51,7 @@ public class LoginServlet extends HttpServlet {
         Utilizador utilizador = utilizadorDAO.autenticar(email.trim(), senha);
 
         if (utilizador == null) {
-            req.setAttribute("erro", "Email ou senha incorrectos. Verifique os seus dados.");
+            req.setAttribute("erro", "Email ou senha incorrectos.");
             req.getRequestDispatcher("/WEB-INF/views/auth/login.jsp").forward(req, res);
             return;
         }
