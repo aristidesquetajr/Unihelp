@@ -1,0 +1,36 @@
+# ============================================================
+# .gitignore — UNIHELP | OJJ (Maven)
+# ============================================================
+
+# ── Build Maven (gerado, nunca commitado) ───────────────────
+target/
+
+# ── NetBeans (apenas ficheiros locais de IDE) ───────────────
+nbproject/private/
+nb-configuration.xml
+nbbuild/
+nbdist/
+
+# ── IntelliJ IDEA (se alguém abrir com IntelliJ) ───────────
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# ── macOS ───────────────────────────────────────────────────
+.DS_Store
+
+# ── Windows ─────────────────────────────────────────────────
+Thumbs.db
+desktop.ini
+
+# ── Ficheiros de ambiente local (nunca commitar credenciais) ─
+.env
+*.env.local
+
+# ── Logs ────────────────────────────────────────────────────
+*.log
+
+# ── Legado Ant (já não necessários) ─────────────────────────
+build/
+dist/
