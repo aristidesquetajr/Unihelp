@@ -75,7 +75,6 @@ public class ConexaoBD {
         if (con != null) {
             try {
                 con.close();
-                System.out.println("[ConexaoBD] Ligacao fechada com sucesso.");
             } catch (SQLException e) {
                 System.err.println("[ConexaoBD] ERRO ao fechar ligacao: " + e.getMessage());
             }
