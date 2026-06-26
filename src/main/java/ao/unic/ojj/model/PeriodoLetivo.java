@@ -89,6 +89,10 @@ public class PeriodoLetivo {
         this.ativo = ativo;
     }
 
+    public String getNomeFormatado() {
+        return semestre + "º Semestre " + anoLetivo;
+    }
+
     @Override
     public String toString() {
         return "PeriodoLetivo{"

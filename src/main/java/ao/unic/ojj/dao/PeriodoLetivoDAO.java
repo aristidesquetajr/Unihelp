@@ -89,17 +89,17 @@ public class PeriodoLetivoDAO {
         return lista;
     }
     
-        public List<PeriodoLetivo> listarUnique() {
-        String sql = "SELECT id, DISTINCT(anoLetivo) FROM `periodoLetivo` ORDER BY anoLetivo DESC";
-        List<PeriodoLetivo> lista = new ArrayList<>();
+    public List<String> listarAnos() {
+        String sql = "SELECT DISTINCT anoLetivo FROM periodoLetivo ORDER BY anoLetivo DESC";
+        List<String> lista = new ArrayList<>();
         Connection con = null;
         try {
             con = ConexaoBD.getConexao();
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) lista.add(mapRow(rs));
+            while (rs.next()) lista.add(rs.getString("anoLetivo"));
         } catch (SQLException e) {
-            System.err.println("[PeriodoLetivoDAO] Erro ao listar: " + e.getMessage());
+            System.err.println("[PeriodoLetivoDAO] Erro ao listar anos: " + e.getMessage());
         } finally {
             ConexaoBD.fechar(con);
         }
@@ -122,6 +122,22 @@ public class PeriodoLetivoDAO {
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("[PeriodoLetivoDAO] Erro ao atualizar: " + e.getMessage());
+            return false;
+        } finally {
+            ConexaoBD.fechar(con);
+        }
+    }
+
+    public boolean eliminar(int id) {
+        String sql = "DELETE FROM periodoLetivo WHERE id=?";
+        Connection con = null;
+        try {
+            con = ConexaoBD.getConexao();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("[PeriodoLetivoDAO] Erro ao eliminar: " + e.getMessage());
             return false;
         } finally {
             ConexaoBD.fechar(con);

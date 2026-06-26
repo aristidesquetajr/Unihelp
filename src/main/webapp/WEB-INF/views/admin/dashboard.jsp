@@ -74,7 +74,7 @@
                         </div>
                     </c:if>
 
-                    <div class="stats-grid">
+                    <div class="stats-grid" style="grid-template-columns:repeat(3, minmax(0, 1fr));">
                         <div class="stat-card">
                             <div class="stat-icon primary"><i class="bi bi-people"></i></div>
                             <div><div class="stat-value">${not empty totalUtilizadores ? totalUtilizadores : 0}</div><div class="stat-label">Utilizadores</div></div>
