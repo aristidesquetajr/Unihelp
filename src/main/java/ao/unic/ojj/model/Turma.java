@@ -15,7 +15,7 @@ public class Turma {
     private int idCurso;
     private int idPeriodoLetivo;
     private String sala;
-    private int anoAcademico;   // 1, 2, 3, 4 ano do curso
+    private int anoAcademico;
 
     public Turma() {
     }
