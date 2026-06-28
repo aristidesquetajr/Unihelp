@@ -85,35 +85,15 @@
                         <!-- Lista -->
                         <div class="card">
                             <div class="card-header">
-                                <h3><i class="bi bi-collection" style="margin-right:.4rem"></i>Turmas Registadas</h3>
+                                <h3><i class="bi bi-collection" style="margin-right:.4rem"></i>Turmas Registadas
+                                    <c:if test="${not empty param.nome or not empty param.idCurso or not empty param.idPeriodoLetivo}">
+                                        <span class="tag-filtro"><i class="bi bi-funnel"></i> Filtro activo</span>
+                                    </c:if>
+                                </h3>
                                 <span class="tag">${not empty turmas ? turmas.size() : 0} registo(s)</span>
-                            </div>
-                            <div style="padding:.75rem 0;border-bottom:1px solid var(--border)">
-                                <div style="display:flex;gap:.6rem;align-items:center;justify-content:space-between;flex-wrap:wrap">
-                                    <span class="text-muted" style="font-size:.9rem">
-                                        <c:choose>
-                                            <c:when test="${not empty param.nome or not empty param.idCurso or not empty param.idPeriodoLetivo}">
-                                                <i class="bi bi-funnel-fill" style="margin-right:.3rem;color:var(--primary)"></i>Filtro activo
-                                            </c:when>
-                                            <c:otherwise>
-                                                <i class="bi bi-info-circle" style="margin-right:.3rem"></i>Sem filtros aplicados
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </span>
-                                    <div style="display:flex;gap:.6rem">
-                                        <c:if test="${not empty param.nome or not empty param.idCurso or not empty param.idPeriodoLetivo}">
-                                            <a href="${pageContext.request.contextPath}/admin/turmas" class="btn btn-outline btn-sm">
-                                                <i class="bi bi-x-circle"></i> Limpar
-                                            </a>
-                                        </c:if>
-                                        <button type="button" id="btnAbrirFiltros" class="btn btn-primary btn-md" style="gap:.4rem">
-                                            <i class="bi bi-funnel"></i> Filtros
-                                            <c:if test="${not empty param.nome or not empty param.idCurso or not empty param.idPeriodoLetivo}">
-                                                <span class="tag-filtro">1</span>
-                                            </c:if>
-                                        </button>
-                                    </div>
-                                </div>
+                                <button type="button" id="btnAbrirFiltros" class="btn btn-primary btn-md" style="gap:.4rem">
+                                    <i class="bi bi-funnel"></i> Filtrar
+                                </button>
                             </div>
                             <div class="table-wrap">
                                 <table class="uni-table">
