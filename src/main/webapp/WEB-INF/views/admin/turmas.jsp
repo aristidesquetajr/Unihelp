@@ -13,6 +13,7 @@
         <title>Gerir Turmas — Admin | UNIHELP</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/styles/unihelp.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/styles/modal.css">
     </head>
     <body>
         <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
@@ -87,38 +88,32 @@
                                 <h3><i class="bi bi-collection" style="margin-right:.4rem"></i>Turmas Registadas</h3>
                                 <span class="tag">${not empty turmas ? turmas.size() : 0} registo(s)</span>
                             </div>
-                            <div style="padding:.75rem 1.25rem;border-bottom:1px solid var(--border)">
-                                <form action="${pageContext.request.contextPath}/admin/turmas" method="get"
-                                      style="display:flex;gap:.6rem;align-items:end;flex-wrap:wrap">
-                                    <div class="form-group" style="margin:0;min-width:160px;flex:1">
-                                        <label class="form-label" for="filtroNome" style="margin-bottom:2px">Nome</label>
-                                        <input type="text" id="filtroNome" name="nome" class="form-control"
-                                               placeholder="Pesquisar por nome…" maxlength="60"
-                                               value="${param.nome}">
+                            <div style="padding:.75rem 0;border-bottom:1px solid var(--border)">
+                                <div style="display:flex;gap:.6rem;align-items:center;justify-content:space-between;flex-wrap:wrap">
+                                    <span class="text-muted" style="font-size:.9rem">
+                                        <c:choose>
+                                            <c:when test="${not empty param.nome or not empty param.idCurso or not empty param.idPeriodoLetivo}">
+                                                <i class="bi bi-funnel-fill" style="margin-right:.3rem;color:var(--primary)"></i>Filtro activo
+                                            </c:when>
+                                            <c:otherwise>
+                                                <i class="bi bi-info-circle" style="margin-right:.3rem"></i>Sem filtros aplicados
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </span>
+                                    <div style="display:flex;gap:.6rem">
+                                        <c:if test="${not empty param.nome or not empty param.idCurso or not empty param.idPeriodoLetivo}">
+                                            <a href="${pageContext.request.contextPath}/admin/turmas" class="btn btn-outline btn-sm">
+                                                <i class="bi bi-x-circle"></i> Limpar
+                                            </a>
+                                        </c:if>
+                                        <button type="button" id="btnAbrirFiltros" class="btn btn-primary btn-md" style="gap:.4rem">
+                                            <i class="bi bi-funnel"></i> Filtros
+                                            <c:if test="${not empty param.nome or not empty param.idCurso or not empty param.idPeriodoLetivo}">
+                                                <span class="tag-filtro">1</span>
+                                            </c:if>
+                                        </button>
                                     </div>
-                                    <div class="form-group" style="margin:0;min-width:160px;flex:1">
-                                        <label class="form-label" for="filtroCurso" style="margin-bottom:2px">Curso</label>
-                                        <select id="filtroCurso" name="idCurso" class="form-control">
-                                            <option value="">Todos os cursos</option>
-                                            <c:forEach var="c" items="${cursos}">
-                                                <option value="${c.id}" ${param.idCurso eq c.id ? 'selected' : ''}>${c.nome}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                    <div class="form-group" style="margin:0;min-width:160px;flex:1">
-                                        <label class="form-label" for="filtroPeriodo" style="margin-bottom:2px">Período</label>
-                                        <select id="filtroPeriodo" name="idPeriodoLetivo" class="form-control">
-                                            <option value="">Todos os períodos</option>
-                                            <c:forEach var="p" items="${periodos}">
-                                                <option value="${p.id}" ${param.idPeriodoLetivo eq p.id ? 'selected' : ''}>${p.nomeFormatado}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                    <div style="display:flex;gap:.6rem;align-items:end;padding-bottom:1px">
-                                        <button type="submit" class="btn btn-primary btn-md" style="padding-block: 13px"><i class="bi bi-search"></i> Pesquisar</button>
-                                        <a href="${pageContext.request.contextPath}/admin/turmas" class="btn btn-outline btn-md"><i class="bi bi-x-circle"></i> Limpar</a>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
                             <div class="table-wrap">
                                 <table class="uni-table">
@@ -245,11 +240,58 @@
                         </div>
 
                     </div>
+                    <!-- Modal de Filtros -->
+                    <div class="modal-overlay" id="modalFiltros">
+                        <div class="modal-box">
+                            <div class="modal-header">
+                                <h3><i class="bi bi-funnel"></i> Filtrar Turmas</h3>
+                                <button type="button" class="modal-close" id="btnFecharFiltros">&times;</button>
+                            </div>
+                            <form action="${pageContext.request.contextPath}/admin/turmas" method="get">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label class="form-label" for="filtroNome">Nome da Turma</label>
+                                        <input type="text" id="filtroNome" name="nome" class="form-control"
+                                               placeholder="Pesquisar por nome…" maxlength="60"
+                                               value="${param.nome}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="filtroCurso">Curso</label>
+                                        <select id="filtroCurso" name="idCurso" class="form-control">
+                                            <option value="">Todos os cursos</option>
+                                            <c:forEach var="c" items="${cursos}">
+                                                <option value="${c.id}" ${param.idCurso eq c.id ? 'selected' : ''}>${c.nome}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="filtroPeriodo">Período Letivo</label>
+                                        <select id="filtroPeriodo" name="idPeriodoLetivo" class="form-control">
+                                            <option value="">Todos os períodos</option>
+                                            <c:forEach var="p" items="${periodos}">
+                                                <option value="${p.id}" ${param.idPeriodoLetivo eq p.id ? 'selected' : ''}>${p.nomeFormatado}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline" onclick="window.location='${pageContext.request.contextPath}/admin/turmas'">
+                                        <i class="bi bi-x-circle"></i> Limpar Filtros
+                                    </button>
+                                    <button type="button" class="btn btn-outline" id="btnCancelarFiltros">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-search"></i> Aplicar Filtros
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </main>
             </div>
         </div>
 
         <script src="${pageContext.request.contextPath}/assets/scripts/unihelp.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/scripts/modal.js"></script>
         <script>
                                             function preencherForm(id, nome, idCurso, idPeriodoLetivo, sala, anoAcademico) {
                                                 document.getElementById('turmaAcao').value = 'editar';
