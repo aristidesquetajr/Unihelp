@@ -58,7 +58,7 @@ public class TurmaDAO {
                 + "FROM turma t "
                 + "LEFT JOIN curso c ON t.idCurso = c.id "
                 + "LEFT JOIN periodoLetivo pl ON t.idPeriodoLetivo = pl.id "
-                + "ORDER BY t.nome";
+                + "ORDER BY pl.anoLetivo desc, pl.semestre desc, t.nome";
         List<TurmaDTO> lista = new ArrayList<>();
         Connection con = null;
         try {
@@ -121,7 +121,7 @@ public class TurmaDAO {
             params.add(idPeriodoLetivo);
         }
 
-        sql.append(" ORDER BY t.nome");
+        sql.append(" ORDER BY pl.anoLetivo desc, pl.semestre desc, t.nome, c.nome");
         List<TurmaDTO> lista = new ArrayList<>();
         Connection con = null;
         try {
