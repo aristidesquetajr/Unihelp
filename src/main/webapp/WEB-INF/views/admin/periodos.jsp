@@ -14,6 +14,7 @@
         <title>Períodos Letivos — Admin | UNIHELP</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/styles/unihelp.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/styles/modal.css">
     </head>
     <body>
         <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
@@ -82,71 +83,14 @@
 
                     <div style="display:grid;grid-template-columns:1fr;gap:1.25rem;align-items:start">
 
-                        <!-- Formulário -->
-                        <div class="card" style="position:sticky;top:calc(var(--topbar-h) + 1rem)">
-                            <div class="card-header">
-                                <h3 id="formTitulo"><i class="bi bi-plus-circle" style="margin-right:.4rem"></i>Adicionar Período</h3>
-                            </div>
-                            <div class="card-body">
-                                <form action="${pageContext.request.contextPath}/admin/periodos" method="post" data-loading id="formPer">
-                                    <input type="hidden" name="acao" id="perAcao" value="criar">
-                                    <input type="hidden" name="id"    id="perId"  value="">
-                                    
-                                    <div class="form-row">
-                                        <div class="form-group">
-                                            <label class="form-label" for="anoLetivo">Ano Letivo <span class="req">*</span></label>
-                                            <input type="text" id="anoLetivo" name="anoLetivo" class="form-control"
-                                                   placeholder="Ex: 2025/2026" maxlength="20" required>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="form-label" for="semestre">Semestre <span class="req">*</span></label>
-                                            <select id="semestre" name="semestre" class="form-control" required>
-                                                <option value="">— Seleccione —</option>
-                                                <option value="1">1º Semestre</option>
-                                                <option value="2">2º Semestre</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-row">
-                                        <div class="form-group">
-                                            <label class="form-label" for="dataInicio">Data de Início <span class="req">*</span></label>
-                                            <input type="date" id="dataInicio" name="dataInicio" class="form-control" required>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="form-label" for="dataFim">Data de Fim <span class="req">*</span></label>
-                                            <input type="date" id="dataFim" name="dataFim" class="form-control" required>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.875rem">
-                                            <input type="checkbox" id="ativoChk" name="ativo" value="true" style="width:16px;height:16px">
-                                            <span>Marcar como período activo</span>
-                                        </label>
-                                        <span class="form-hint">Apenas um período deve estar activo de cada vez.</span>
-                                    </div>
-
-                                    <div style="display:flex;gap:.6rem">
-                                        <button type="submit" class="btn btn-primary" style="flex:1;justify-content:center">
-                                            <i class="bi bi-save" id="btnIcone"></i> <span id="btnTexto">Adicionar</span>
-                                        </button>
-                                        <button type="button" class="btn btn-outline" onclick="resetForm()" title="Limpar">
-                                            <i class="bi bi-x-circle"></i>
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-
                         <!-- Lista -->
                         <div class="card">
                             <div class="card-header">
                                 <h3><i class="bi bi-calendar3" style="margin-right:.4rem"></i>Períodos Registados</h3>
                                 <span class="tag">${not empty periodos ? periodos.size() : 0} registo(s)</span>
+                                <button type="button" id="btnNovoPeriodo" class="btn btn-primary btn-md" style="gap:.4rem">
+                                    <i class="bi bi-plus-circle"></i> Novo Período
+                                </button>
                             </div>
                             <div class="table-wrap">
                                 <table class="uni-table">
@@ -169,7 +113,7 @@
                                                         <div class="empty-state">
                                                             <i class="bi bi-calendar-x"></i>
                                                             <h3>Sem períodos</h3>
-                                                            <p>Adicione o primeiro período letivo usando o formulário.</p>
+                                                            <p>Adicione o primeiro período letivo clicando em <strong>Novo Período</strong>.</p>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -227,32 +171,120 @@
                                 </table>
                             </div>
                         </div>
+                    <!-- Modal de Novo Período -->
+                    <div class="modal-overlay" id="modalNovoPeriodo">
+                        <div class="modal-box">
+                            <div class="modal-header">
+                                <h3 id="modalPerTitulo"><i class="bi bi-plus-circle"></i> Adicionar Período</h3>
+                                <button type="button" class="modal-close" id="btnFecharNovoPeriodo">&times;</button>
+                            </div>
+                            <form action="${pageContext.request.contextPath}/admin/periodos" method="post" id="formPerModal">
+                                <input type="hidden" name="acao" id="perAcaoModal" value="criar">
+                                <input type="hidden" name="id"    id="perIdModal"  value="">
+                                <div class="modal-body">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label class="form-label" for="anoLetivoModal">Ano Letivo <span class="req">*</span></label>
+                                            <input type="text" id="anoLetivoModal" name="anoLetivo" class="form-control"
+                                                   placeholder="Ex: 2025/2026" maxlength="20" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label" for="semestreModal">Semestre <span class="req">*</span></label>
+                                            <select id="semestreModal" name="semestre" class="form-control" required>
+                                                <option value="">— Seleccione —</option>
+                                                <option value="1">1º Semestre</option>
+                                                <option value="2">2º Semestre</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label class="form-label" for="dataInicioModal">Data de Início <span class="req">*</span></label>
+                                            <input type="date" id="dataInicioModal" name="dataInicio" class="form-control" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label" for="dataFimModal">Data de Fim <span class="req">*</span></label>
+                                            <input type="date" id="dataFimModal" name="dataFim" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.875rem">
+                                            <input type="checkbox" id="ativoChkModal" name="ativo" value="true" style="width:16px;height:16px">
+                                            <span>Marcar como período activo</span>
+                                        </label>
+                                        <span class="form-hint">Apenas um período deve estar activo de cada vez.</span>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline" id="btnCancelarNovoPeriodo">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-save"></i> <span id="btnTextoModal">Adicionar</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </main>
             </div>
         </div>
 
         <script src="${pageContext.request.contextPath}/assets/scripts/unihelp.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/scripts/modal.js"></script>
         <script>
-                                                                                function preencherForm(id, anoLetivo, semestre, dataInicio, dataFim, ativo) {
-                                                                                    document.getElementById('perAcao').value = 'editar';
-                                                                                    document.getElementById('perId').value = id;
-                                                                                    document.getElementById('anoLetivo').value = anoLetivo;
-                                                                                    document.getElementById('semestre').value = semestre;
-                                                                                    document.getElementById('dataInicio').value = dataInicio;
-                                                                                    document.getElementById('dataFim').value = dataFim;
-                                                                                    document.getElementById('ativoChk').checked = (ativo === 'true');
-                                                                                    document.getElementById('formTitulo').innerHTML = '<i class="bi bi-pencil" style="margin-right:.4rem"></i>Editar Período';
-                                                                                    document.getElementById('btnTexto').textContent = 'Guardar Alterações';
-                                                                                    document.getElementById('anoLetivo').focus();
-                                                                                }
-                                                                                function resetForm() {
-                                                                                    document.getElementById('perAcao').value = 'criar';
-                                                                                    document.getElementById('perId').value = '';
-                                                                                    document.getElementById('formPer').reset();
-                                                                                    document.getElementById('formTitulo').innerHTML = '<i class="bi bi-plus-circle" style="margin-right:.4rem"></i>Adicionar Período';
-                                                                                    document.getElementById('btnTexto').textContent = 'Adicionar';
-                                                                                }
+            (function () {
+                'use strict';
+
+                var overlay = document.getElementById('modalNovoPeriodo');
+                var btnAbrir = document.getElementById('btnNovoPeriodo');
+                var btnFechar = document.getElementById('btnFecharNovoPeriodo');
+                var btnCancelar = document.getElementById('btnCancelarNovoPeriodo');
+
+                function abrir() {
+                    var form = document.getElementById('formPerModal');
+                    if (form) {
+                        form.reset();
+                        document.getElementById('perAcaoModal').value = 'criar';
+                        document.getElementById('perIdModal').value = '';
+                        document.getElementById('modalPerTitulo').innerHTML = '<i class="bi bi-plus-circle"></i> Adicionar Período';
+                        document.getElementById('btnTextoModal').textContent = 'Adicionar';
+                    }
+                    overlay.classList.add('open');
+                    document.body.style.overflow = 'hidden';
+                    setTimeout(function () { document.getElementById('anoLetivoModal').focus(); }, 350);
+                }
+
+                function fechar() {
+                    overlay.classList.remove('open');
+                    document.body.style.overflow = '';
+                }
+
+                if (btnAbrir) btnAbrir.addEventListener('click', abrir);
+                if (btnFechar) btnFechar.addEventListener('click', fechar);
+                if (btnCancelar) btnCancelar.addEventListener('click', fechar);
+
+                overlay.addEventListener('click', function (e) {
+                    if (e.target === overlay) fechar();
+                });
+
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape' && overlay.classList.contains('open')) fechar();
+                });
+
+                window.preencherForm = function (id, anoLetivo, semestre, dataInicio, dataFim, ativo) {
+                    document.getElementById('perAcaoModal').value = 'editar';
+                    document.getElementById('perIdModal').value = id;
+                    document.getElementById('anoLetivoModal').value = anoLetivo;
+                    document.getElementById('semestreModal').value = semestre;
+                    document.getElementById('dataInicioModal').value = dataInicio;
+                    document.getElementById('dataFimModal').value = dataFim;
+                    document.getElementById('ativoChkModal').checked = (ativo === 'true');
+                    document.getElementById('modalPerTitulo').innerHTML = '<i class="bi bi-pencil"></i> Editar Período';
+                    document.getElementById('btnTextoModal').textContent = 'Guardar Alterações';
+                    overlay.classList.add('open');
+                    document.body.style.overflow = 'hidden';
+                    setTimeout(function () { document.getElementById('anoLetivoModal').focus(); }, 350);
+                };
+            })();
         </script>
     </body>
 </html>
