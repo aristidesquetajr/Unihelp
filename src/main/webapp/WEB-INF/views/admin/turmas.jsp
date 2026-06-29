@@ -80,7 +80,7 @@
                         </c:choose>
                     </c:if>
 
-                    <div style="display:grid;grid-template-columns:1fr 380px;gap:1.25rem;align-items:start">
+                    <div style="display:grid;grid-template-columns:1fr;gap:1.25rem;align-items:start">
 
                         <!-- Lista -->
                         <div class="card">
@@ -91,9 +91,14 @@
                                     </c:if>
                                 </h3>
                                 <span class="tag">${not empty turmas ? turmas.size() : 0} registo(s)</span>
-                                <button type="button" id="btnAbrirFiltros" class="btn btn-primary btn-md" style="gap:.4rem">
-                                    <i class="bi bi-funnel"></i> Filtrar
-                                </button>
+                                <div style="display:flex;gap:.6rem">
+                                    <button type="button" id="btnAbrirFiltros" class="btn btn-primary btn-md" style="gap:.4rem">
+                                        <i class="bi bi-funnel"></i> Filtrar
+                                    </button>
+                                    <button type="button" id="btnNovaTurma" class="btn btn-primary btn-md" style="gap:.4rem">
+                                        <i class="bi bi-plus-circle"></i> Nova Turma
+                                    </button>
+                                </div>
                             </div>
                             <div class="table-wrap">
                                 <table class="uni-table">
@@ -115,7 +120,7 @@
                                                         <div class="empty-state">
                                                             <i class="bi bi-collection"></i>
                                                             <h3>Sem turmas</h3>
-                                                            <p>Adicione a primeira turma usando o formulário.</p>
+                                                            <p>Adicione a primeira turma clicando em <strong>Nova Turma</strong>.</p>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -150,72 +155,6 @@
                                         </c:choose>
                                     </tbody>
                                 </table>
-                            </div>
-                        </div>
-
-                        <!-- Formulário -->
-                        <div class="card" style="position:sticky;top:calc(var(--topbar-h) + 1rem)">
-                            <div class="card-header">
-                                <h3 id="formTitulo"><i class="bi bi-plus-circle" style="margin-right:.4rem"></i>Adicionar Turma</h3>
-                            </div>
-                            <div class="card-body">
-                                <form action="${pageContext.request.contextPath}/admin/turmas" method="post" data-loading id="formTurma">
-                                    <input type="hidden" name="acao" id="turmaAcao" value="criar">
-                                    <input type="hidden" name="id"    id="turmaId"  value="">
-
-                                    <div class="form-group">
-                                        <label class="form-label" for="nome">Nome da Turma <span class="req">*</span></label>
-                                        <input type="text" id="nome" name="nome" class="form-control"
-                                               placeholder="Ex: LCC1T" maxlength="80" required>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label" for="idCurso">Curso <span class="req">*</span></label>
-                                        <select id="idCurso" name="idCurso" class="form-control" required>
-                                            <option value="">— Seleccione o curso —</option>
-                                            <c:forEach var="c" items="${cursos}">
-                                                <option value="${c.id}">${c.nome}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label" for="idPeriodoLetivo">Período Letivo <span class="req">*</span></label>
-                                        <select id="idPeriodoLetivo" name="idPeriodoLetivo" class="form-control" required>
-                                            <option value="">— Seleccione o período —</option>
-                                            <c:forEach var="p" items="${periodos}">
-                                                <option value="${p.id}">${p.nomeFormatado}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label" for="anoAcademico">Ano Académico <span class="req">*</span></label>
-                                        <select id="anoAcademico" name="anoAcademico" class="form-control" required>
-                                            <option value="">— Seleccione —</option>
-                                            <option value="1">1º Ano</option>
-                                            <option value="2">2º Ano</option>
-                                            <option value="3">3º Ano</option>
-                                            <option value="4">4º Ano</option>
-                                            <option value="5">5º Ano</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label" for="sala">Sala</label>
-                                        <input type="text" id="sala" name="sala" class="form-control"
-                                               placeholder="Ex: Sala 301" maxlength="30">
-                                    </div>
-
-                                    <div style="display:flex;gap:.6rem">
-                                        <button type="submit" class="btn btn-primary" style="flex:1;justify-content:center">
-                                            <i class="bi bi-save" id="btnIcone"></i> <span id="btnTexto">Adicionar</span>
-                                        </button>
-                                        <button type="button" class="btn btn-outline" onclick="resetForm()" title="Limpar">
-                                            <i class="bi bi-x-circle"></i>
-                                        </button>
-                                    </div>
-                                </form>
                             </div>
                         </div>
 
@@ -266,6 +205,67 @@
                             </form>
                         </div>
                     </div>
+
+                    <!-- Modal de Nova Turma -->
+                    <div class="modal-overlay" id="modalNovaTurma">
+                        <div class="modal-box">
+                            <div class="modal-header">
+                                <h3 id="modalTurmaTitulo"><i class="bi bi-plus-circle"></i> Adicionar Turma</h3>
+                                <button type="button" class="modal-close" id="btnFecharNovaTurma">&times;</button>
+                            </div>
+                            <form action="${pageContext.request.contextPath}/admin/turmas" method="post" id="formTurmaModal">
+                                <input type="hidden" name="acao" id="turmaAcaoModal" value="criar">
+                                <input type="hidden" name="id"    id="turmaIdModal"  value="">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label class="form-label" for="nomeModal">Nome da Turma <span class="req">*</span></label>
+                                        <input type="text" id="nomeModal" name="nome" class="form-control"
+                                               placeholder="Ex: LCC1T" maxlength="80" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="idCursoModal">Curso <span class="req">*</span></label>
+                                        <select id="idCursoModal" name="idCurso" class="form-control" required>
+                                            <option value="">— Seleccione o curso —</option>
+                                            <c:forEach var="c" items="${cursos}">
+                                                <option value="${c.id}">${c.nome}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="idPeriodoLetivoModal">Período Letivo <span class="req">*</span></label>
+                                        <select id="idPeriodoLetivoModal" name="idPeriodoLetivo" class="form-control" required>
+                                            <option value="">— Seleccione o período —</option>
+                                            <c:forEach var="p" items="${periodos}">
+                                                <option value="${p.id}">${p.nomeFormatado}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="anoAcademicoModal">Ano Académico <span class="req">*</span></label>
+                                        <select id="anoAcademicoModal" name="anoAcademico" class="form-control" required>
+                                            <option value="">— Seleccione —</option>
+                                            <option value="1">1º Ano</option>
+                                            <option value="2">2º Ano</option>
+                                            <option value="3">3º Ano</option>
+                                            <option value="4">4º Ano</option>
+                                            <option value="5">5º Ano</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="salaModal">Sala</label>
+                                        <input type="text" id="salaModal" name="sala" class="form-control"
+                                               placeholder="Ex: Sala 301" maxlength="30">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline" id="btnCancelarNovaTurma">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-save"></i> <span id="btnTextoModal">Adicionar</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </main>
             </div>
         </div>
@@ -273,34 +273,72 @@
         <script src="${pageContext.request.contextPath}/assets/scripts/unihelp.js"></script>
         <script src="${pageContext.request.contextPath}/assets/scripts/modal.js"></script>
         <script>
-                                            function preencherForm(id, nome, idCurso, idPeriodoLetivo, sala, anoAcademico) {
-                                                document.getElementById('turmaAcao').value = 'editar';
-                                                document.getElementById('turmaId').value = id;
-                                                document.getElementById('nome').value = nome;
-                                                selById('idCurso', idCurso);
-                                                selById('idPeriodoLetivo', idPeriodoLetivo);
-                                                selById('anoAcademico', anoAcademico);
-                                                document.getElementById('sala').value = sala || '';
-                                                document.getElementById('formTitulo').innerHTML = '<i class="bi bi-pencil" style="margin-right:.4rem"></i>Editar Turma';
-                                                document.getElementById('btnTexto').textContent = 'Guardar Alterações';
-                                                document.getElementById('nome').focus();
-                                            }
-                                            function selById(selId, val) {
-                                                var sel = document.getElementById(selId);
-                                                for (var i = 0; i < sel.options.length; i++) {
-                                                    if (sel.options[i].value == val) {
-                                                        sel.selectedIndex = i;
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                            function resetForm() {
-                                                document.getElementById('turmaAcao').value = 'criar';
-                                                document.getElementById('turmaId').value = '';
-                                                document.getElementById('formTurma').reset();
-                                                document.getElementById('formTitulo').innerHTML = '<i class="bi bi-plus-circle" style="margin-right:.4rem"></i>Adicionar Turma';
-                                                document.getElementById('btnTexto').textContent = 'Adicionar';
-                                            }
+            (function () {
+                'use strict';
+
+                // --- Modal de Nova Turma ---
+                var overlay = document.getElementById('modalNovaTurma');
+                var btnAbrir = document.getElementById('btnNovaTurma');
+                var btnFechar = document.getElementById('btnFecharNovaTurma');
+                var btnCancelar = document.getElementById('btnCancelarNovaTurma');
+
+                function abrir() {
+                    var form = document.getElementById('formTurmaModal');
+                    if (form) {
+                        form.reset();
+                        document.getElementById('turmaAcaoModal').value = 'criar';
+                        document.getElementById('turmaIdModal').value = '';
+                        document.getElementById('modalTurmaTitulo').innerHTML = '<i class="bi bi-plus-circle"></i> Adicionar Turma';
+                        document.getElementById('btnTextoModal').textContent = 'Adicionar';
+                    }
+                    overlay.classList.add('open');
+                    document.body.style.overflow = 'hidden';
+                    setTimeout(function () { document.getElementById('nomeModal').focus(); }, 350);
+                }
+
+                function fechar() {
+                    overlay.classList.remove('open');
+                    document.body.style.overflow = '';
+                }
+
+                if (btnAbrir) btnAbrir.addEventListener('click', abrir);
+                if (btnFechar) btnFechar.addEventListener('click', fechar);
+                if (btnCancelar) btnCancelar.addEventListener('click', fechar);
+
+                overlay.addEventListener('click', function (e) {
+                    if (e.target === overlay) fechar();
+                });
+
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape' && overlay.classList.contains('open')) fechar();
+                });
+
+                // --- Preencher formulário no modal para edição ---
+                window.preencherForm = function (id, nome, idCurso, idPeriodoLetivo, sala, anoAcademico) {
+                    document.getElementById('turmaAcaoModal').value = 'editar';
+                    document.getElementById('turmaIdModal').value = id;
+                    document.getElementById('nomeModal').value = nome;
+                    selById('idCursoModal', idCurso);
+                    selById('idPeriodoLetivoModal', idPeriodoLetivo);
+                    selById('anoAcademicoModal', anoAcademico);
+                    document.getElementById('salaModal').value = sala || '';
+                    document.getElementById('modalTurmaTitulo').innerHTML = '<i class="bi bi-pencil"></i> Editar Turma';
+                    document.getElementById('btnTextoModal').textContent = 'Guardar Alterações';
+                    overlay.classList.add('open');
+                    document.body.style.overflow = 'hidden';
+                    setTimeout(function () { document.getElementById('nomeModal').focus(); }, 350);
+                };
+
+                function selById(selId, val) {
+                    var sel = document.getElementById(selId);
+                    for (var i = 0; i < sel.options.length; i++) {
+                        if (sel.options[i].value == val) {
+                            sel.selectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+            })();
         </script>
     </body>
 </html>
