@@ -136,6 +136,48 @@ public class UtilizadorDAO {
         return null;
     }
 
+    public List<Utilizador> pesquisar(String q, String perfil, String status) {
+        StringBuilder sql = new StringBuilder("SELECT * FROM utilizador WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+
+        if (q != null && !q.trim().isEmpty()) {
+            sql.append(" AND (nome LIKE ? OR email LIKE ?)");
+            String like = "%" + q.trim() + "%";
+            params.add(like);
+            params.add(like);
+        }
+
+        if (perfil != null && !perfil.trim().isEmpty()) {
+            sql.append(" AND perfil = ?");
+            params.add(perfil.trim().toUpperCase());
+        }
+
+        if (status != null && !status.trim().isEmpty()) {
+            sql.append(" AND status = ?");
+            params.add(status.trim().toUpperCase());
+        }
+
+        sql.append(" ORDER BY nome");
+
+        List<Utilizador> lista = new ArrayList<>();
+        try {
+            con = ConexaoBD.getConexao();
+            PreparedStatement ps = con.prepareStatement(sql.toString());
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                lista.add(mapRow(rs));
+            }
+        } catch (SQLException e) {
+            System.err.println("[UtilizadorDAO] Erro ao pesquisar: " + e.getMessage());
+        } finally {
+            ConexaoBD.fechar(con);
+        }
+        return lista;
+    }
+
     public List<Utilizador> listar() {
         String sql = "SELECT * FROM utilizador ORDER BY nome";
 
