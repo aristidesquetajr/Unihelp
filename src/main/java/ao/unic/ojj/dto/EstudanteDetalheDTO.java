@@ -4,6 +4,8 @@
  */
 package ao.unic.ojj.dto;
 
+import ao.unic.ojj.model.Inscricao;
+import ao.unic.ojj.model.Utilizador;
 import java.util.List;
 
 /**
@@ -21,6 +23,8 @@ public class EstudanteDetalheDTO {
     private String sala;
     private int anoAcademico;
     private String anoLetivo;
+    private Utilizador.Status status;
+    private Inscricao.Estado estadoInscricao;
     private List<String> telefones;
 
     public EstudanteDetalheDTO() {
@@ -116,5 +120,21 @@ public class EstudanteDetalheDTO {
 
     public void setTelefones(List<String> tel) {
         this.telefones = tel;
+    }
+
+    public Utilizador.Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Utilizador.Status status) {
+        this.status = status;
+    }
+
+    public Inscricao.Estado getEstadoInscricao() {
+        return estadoInscricao;
+    }
+
+    public void setEstadoInscricao(Inscricao.Estado estadoInscricao) {
+        this.estadoInscricao = estadoInscricao;
     }
 }
